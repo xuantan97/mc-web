@@ -15,18 +15,19 @@ class App extends Component {
       <div className="col-sm-12">
         <Router history={history}>
           <div>
-            <ul>
+            {/* <ul>
               <div>
                 <li><Link to="/">Trang chủ</Link></li>
                 <li><Link to="/live">Cấu hình stream</Link></li>
               </div>
               <li style={{ float: 'right' }}><Link to="/login">Đăng xuất</Link></li>
-            </ul>
+            </ul> */}
             <div className="col-sm-8 col-sm-offset-2">
               <Switch>
-                <PrivateRoute exact path="/" component={Dashboard} />
-                <Route path="/login" component={Login} />
-                <Route path="/signup" component={Signup} />
+                {/* <PrivateRoute exact path="/" component={Dashboard} /> */}
+                <Route path="/" component={Dashboard} />
+                {/* <Route path="/login" component={Login} /> */}
+                {/* <Route path="/signup" component={Signup} /> */}
                 {/* <Route component={NotFoundPage} /> */}
               </Switch>
             </div>
