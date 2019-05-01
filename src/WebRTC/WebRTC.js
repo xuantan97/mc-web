@@ -1,6 +1,7 @@
 import React from "react";
 import Peer from "peerjs";
 import * as $ from "jquery";
+import io from 'socket.io-client';
 
 class WebRTCVideo extends React.Component {
     PEER_SERVER = { host: '103.89.85.105', port: '1234', path: '/peerjs', key: 'peerjs', };
@@ -19,22 +20,22 @@ class WebRTCVideo extends React.Component {
 
         navigator.mediaDevices
             .getUserMedia({ video: true, audio: true })
-            .then(stream => { console.log(stream); this.videoTag.current.srcObject = stream })
-            .catch(console.log);
+            .then(stream => { 
+                 this.handleStream(stream);
+            })
+            .catch(e => console.log(e.message));
     }
     handleStream(stream) {
-        debugger
-        console.log(stream);
-        // Set your video displays
-        $('#broadcast-video').prop('src', URL.createObjectURL(stream));
+        var socket = io.connect('http://103.89.85.105:1321', {transports : ['websocket']});
 
-        console.log([stream]);
-        window.localStream = [stream];
+        //set video ne
+        this.videoTag.current.srcObject = stream;
         var peer = new Peer(this.PEER_SERVER);
 
         peer.on('open', function () {
             console.log(peer.id);
             $('#my-id').text(peer.id);
+            socket.emit('broadcastID', peer.id);
         });
         peer.on('connection', function (dataCon) {
             console.log('Peer wanting to connect!', dataCon.peer);
