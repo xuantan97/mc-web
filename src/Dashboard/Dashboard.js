@@ -85,6 +85,9 @@ export default class Dashboard extends React.Component {
             $('#answer-C-area').html("C. " + response.body.C );
             $('#correct-answer-area').html("Correct: " + response.answer);
 
+            $('#summary-correct').html("");
+            $('#summary-incorrect').html("");
+
         })
         .catch(error => console.log(error));
     }
@@ -95,6 +98,20 @@ export default class Dashboard extends React.Component {
         this.socket.emit('GO_TO_GET_QUESTION');
     }
 
+    endGame() {
+        fetch('http://bonddemo.tk/v1/question/end-game', {
+                method: 'GET',
+                headers: {
+                    'Authorization': 'Bearer lyWyy7-2EqXt6JOjKXnQV90Ghv94ie_5vO20rHFP',
+                    'Content-Type': 'text/plain'
+                },
+            })
+            .then(res => res.json())
+            .then(response => {
+                console.log(response);
+            })
+            .catch(error => console.log(error));
+    }
    
 
 
@@ -105,6 +122,7 @@ export default class Dashboard extends React.Component {
                 <Button onClick={() => this.startGame()}>Start Game</Button>
                 <Button onClick={() => this.getQuestionMC()}>Get Question MC</Button>
                 <Button onClick={() => this.getQuestionClient()}>Get Question Client</Button>
+                <Button onClick={() => this.endGame()}>End Game</Button>
                
                 <div id="question-area"></div>
                 <div id="answer-A-area"></div>
