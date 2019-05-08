@@ -9,6 +9,7 @@ export default class Dashboard extends React.Component {
         super(props);
         this.state = { 
             value: '' ,
+            id: ''
         };
 
 
@@ -20,8 +21,9 @@ export default class Dashboard extends React.Component {
     componentDidMount() {
 
         this.socket.on('CLOSE_QUESTION', () => {
+            console.log("CLOSE_QUESTION");
 
-            fetch('http://bonddemo.tk/v1/question/summary-question', {
+            fetch('http://bonddemo.tk/v1/question/summary-question?id=' + this.state.id, {
                 method: 'GET',
                 headers: {
                     'Authorization': 'Bearer lyWyy7-2EqXt6JOjKXnQV90Ghv94ie_5vO20rHFP',
@@ -31,6 +33,8 @@ export default class Dashboard extends React.Component {
             .then(res => res.json())
             .then(response => {
                 console.log(response);
+                $('#summary-correct').html("Total correct: " + response.correct);
+                $('#summary-incorrect').html("Total Incorrect: " + response.incorrect);
             })
             .catch(error => console.log(error));
 
@@ -47,8 +51,19 @@ export default class Dashboard extends React.Component {
     }
 
     startGame() {
-        this.socket.emit("START_GAME");
+        fetch('http://bonddemo.tk/v1/user/start-game', {
+            method: 'GET',
+            headers: {
+                'Authorization': 'Bearer lyWyy7-2EqXt6JOjKXnQV90Ghv94ie_5vO20rHFP',
+            },
+        })
+        .then(res => res.json())
+        .then(response => {
+            console.log(response)
+        })
+        .catch(error => console.log(error));
     }
+
 
     getQuestionMC() {
         fetch('http://bonddemo.tk/v1/question/render-question?difficulty=3', {
@@ -60,6 +75,7 @@ export default class Dashboard extends React.Component {
         })
         .then(res => res.json())
         .then(response => {
+            this.setState({id: response.id});
             response.body = JSON.parse(response.body);
             
             console.log(response);
@@ -95,6 +111,9 @@ export default class Dashboard extends React.Component {
                 <div id="answer-B-area"></div>
                 <div id="answer-C-area"></div>
                 <div id="correct-answer-area"></div>
+                <br/>
+                <div id="summary-correct"></div>
+                <div id="summary-incorrect"></div>
             </div>
         );
     }
