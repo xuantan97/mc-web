@@ -12,11 +12,11 @@ export default class Dashboard extends React.Component {
             id: ''
         };
 
-
         this.handleChange = this.handleChange.bind(this);
         this.handleSubmit = this.handleSubmit.bind(this);
     }
     socket = io("103.89.85.105:1235");
+    //socket = io("localhost:1235");
 
     componentDidMount() {
 
@@ -39,6 +39,10 @@ export default class Dashboard extends React.Component {
             .catch(error => console.log(error));
 
         });
+
+        this.socket.on("SERVER_CHAT", (data) => {
+            $("#content").append("<div>"+ data[1] + ": "+ data[0] +"</div>")
+          });
     }
 
     handleChange(event) {
@@ -132,6 +136,13 @@ export default class Dashboard extends React.Component {
                 <br/>
                 <div id="summary-correct"></div>
                 <div id="summary-incorrect"></div>
+
+                <div>
+                    <p>Content chat</p>
+                    <div id="content">
+            
+                    </div>
+                </div>
             </div>
         );
     }
