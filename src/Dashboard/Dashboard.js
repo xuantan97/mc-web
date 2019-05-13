@@ -15,7 +15,7 @@ export default class Dashboard extends React.Component {
         this.handleChange = this.handleChange.bind(this);
         this.handleSubmit = this.handleSubmit.bind(this);
     }
-    socket = io("103.89.85.105:1235");
+     socket = io("103.89.85.105:1235");
     //socket = io("localhost:1235");
 
     componentDidMount() {
@@ -33,15 +33,16 @@ export default class Dashboard extends React.Component {
             .then(res => res.json())
             .then(response => {
                 console.log(response);
-                $('#summary-correct').html("Total correct: " + response.correct);
-                $('#summary-incorrect').html("Total Incorrect: " + response.incorrect);
+                $('#summary-correct').html(response.correct);
+                $('#summary-incorrect').html(response.incorrect);
             })
             .catch(error => console.log(error));
 
         });
 
         this.socket.on("SERVER_CHAT", (data) => {
-            $("#content").append("<div>"+ data[1] + ": "+ data[0] +"</div>")
+            $("#content").append("<div style='color:#ff0'>"+ data[1] + ": <span style='color:white'>"+ data[0] +"</span></div>");
+            $('#content').append("<style>#content:before{content:'' !important}</style>");
           });
     }
 
@@ -87,7 +88,7 @@ export default class Dashboard extends React.Component {
             $('#answer-A-area').html("A. " + response.body.A );
             $('#answer-B-area').html("B. " + response.body.B );
             $('#answer-C-area').html("C. " + response.body.C );
-            $('#correct-answer-area').html("Correct: " + response.answer);
+            // $('#correct-answer-area').html("Correct: " + response.answer);
 
             $('#summary-correct').html("");
             $('#summary-incorrect').html("");
@@ -121,26 +122,43 @@ export default class Dashboard extends React.Component {
 
     render() {
         return (
-            <div>
+            <div className="container-full">
                 <WebRTCVideo></WebRTCVideo>
-                <Button onClick={() => this.startGame()}>Start Game</Button>
-                <Button onClick={() => this.getQuestionMC()}>Get Question MC</Button>
-                <Button onClick={() => this.getQuestionClient()}>Get Question Client</Button>
-                <Button onClick={() => this.endGame()}>End Game</Button>
-               
-                <div id="question-area"></div>
-                <div id="answer-A-area"></div>
-                <div id="answer-B-area"></div>
-                <div id="answer-C-area"></div>
-                <div id="correct-answer-area"></div>
+                <div className="act">
+                    <Button onClick={() => this.startGame()}>Start Game</Button>
+                    <Button onClick={() => this.getQuestionMC()}>Get Question MC</Button>
+                    <Button onClick={() => this.getQuestionClient()}>Get Question Client</Button>
+                    <Button onClick={() => this.endGame()}>End Game</Button>
+                </div>
+               <div className="question">
+                    <div className="question-1">
+                            <div id="question-area">Q: </div>
+                            <div className="answer" id="answer-A-area">A. </div>
+                            <div className="answer" id="answer-B-area">B. </div>
+                            <div className="answer" id="answer-C-area">C. </div>
+                            {/* <div id="correct-answer-area"></div> */}
+                    </div>
+                </div>
                 <br/>
-                <div id="summary-correct"></div>
-                <div id="summary-incorrect"></div>
+                
 
-                <div>
-                    <p>Content chat</p>
+                <div className="chat-content">
+                    {/* <p>Content chat</p> */}
                     <div id="content">
             
+                    </div>
+                </div>
+
+                <div className="summary">
+                    <div className="summary-1" style={{fontSize: '30px', fontWeight: '700'}}>
+                        <div>
+                            <label>Total correct: &emsp;</label>
+                            <span id="summary-correct" style={{float: 'right'}}></span>
+                        </div>
+                        <div>
+                            <label>Total incorrect: &emsp;</label>
+                            <span id="summary-incorrect" style={{float: 'right'}}></span>
+                        </div>
                     </div>
                 </div>
             </div>
