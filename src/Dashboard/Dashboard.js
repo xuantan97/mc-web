@@ -7,6 +7,8 @@ import io from 'socket.io-client';
 export default class Dashboard extends React.Component {
     constructor(props) {
         super(props);
+        this.socket = io("localhost:1235");
+        //this.socket = io("103.89.85.105:1235");
         this.state = { 
             value: '' ,
             id: ''
@@ -15,9 +17,7 @@ export default class Dashboard extends React.Component {
         this.handleChange = this.handleChange.bind(this);
         this.handleSubmit = this.handleSubmit.bind(this);
     }
-     socket = io("103.89.85.105:1235");
-    //socket = io("localhost:1235");
-
+    
     componentDidMount() {
 
         this.socket.on('CLOSE_QUESTION', () => {
@@ -103,19 +103,25 @@ export default class Dashboard extends React.Component {
         this.socket.emit('GO_TO_GET_QUESTION');
     }
 
+
+    responseAnsewer() {
+        this.socket.emit('RESPONSE_ANSWER_TO_NODE');
+    }
+
+
     endGame() {
         fetch('http://bonddemo.tk/v1/question/end-game', {
-                method: 'GET',
-                headers: {
-                    'Authorization': 'Bearer lyWyy7-2EqXt6JOjKXnQV90Ghv94ie_5vO20rHFP',
-                    'Content-Type': 'text/plain'
-                },
-            })
-            .then(res => res.json())
-            .then(response => {
-                console.log(response);
-            })
-            .catch(error => console.log(error));
+            method: 'GET',
+            headers: {
+                'Authorization': 'Bearer lyWyy7-2EqXt6JOjKXnQV90Ghv94ie_5vO20rHFP',
+                'Content-Type': 'text/plain'
+            },
+        })
+        .then(res => res.json())
+        .then(response => {
+            console.log(response);
+        })
+        .catch(error => console.log(error));
     }
    
 
@@ -128,6 +134,7 @@ export default class Dashboard extends React.Component {
                     <Button onClick={() => this.startGame()}>Start Game</Button>
                     <Button onClick={() => this.getQuestionMC()}>Get Question MC</Button>
                     <Button onClick={() => this.getQuestionClient()}>Get Question Client</Button>
+                    <Button onClick={() => this.responseAnsewer()}>Response answer</Button>
                     <Button onClick={() => this.endGame()}>End Game</Button>
                 </div>
                <div className="question">
