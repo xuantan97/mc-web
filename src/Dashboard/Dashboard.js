@@ -7,11 +7,12 @@ import io from 'socket.io-client';
 export default class Dashboard extends React.Component {
     constructor(props) {
         super(props);
-        this.socket = io("localhost:1235");
-        //this.socket = io("103.89.85.105:1235");
+        // this.socket = io("localhost:1235");
+        this.socket = io("103.89.85.105:1235");
         this.state = { 
             value: '' ,
-            id: ''
+            id: '',
+            program_id: 1
         };
 
         this.handleChange = this.handleChange.bind(this);
@@ -20,25 +21,27 @@ export default class Dashboard extends React.Component {
     
     componentDidMount() {
 
-        this.socket.on('CLOSE_QUESTION', () => {
-            console.log("CLOSE_QUESTION");
+        // this.socket.on('CLOSE_QUESTION', () => {
+        //     console.log("CLOSE_QUESTION");
+        //     setTimeout(function () {
+        //         //TODO
+        //     }, 1000)
+        //     fetch('http://bonddemo.tk/v1/question/summary-question?id=' + this.state.id, {
+        //         method: 'GET',
+        //         headers: {
+        //             'Authorization': 'Bearer lyWyy7-2EqXt6JOjKXnQV90Ghv94ie_5vO20rHFP',
+        //             'Content-Type': 'text/plain'
+        //         },
+        //     })
+        //     .then(res => res.json())
+        //     .then(response => {
+        //         console.log(response);
+        //         $('#summary-correct').html(response.correct);
+        //         $('#summary-incorrect').html(response.incorrect);
+        //     })
+        //     .catch(error => console.log(error));
 
-            fetch('http://bonddemo.tk/v1/question/summary-question?id=' + this.state.id, {
-                method: 'GET',
-                headers: {
-                    'Authorization': 'Bearer lyWyy7-2EqXt6JOjKXnQV90Ghv94ie_5vO20rHFP',
-                    'Content-Type': 'text/plain'
-                },
-            })
-            .then(res => res.json())
-            .then(response => {
-                console.log(response);
-                $('#summary-correct').html(response.correct);
-                $('#summary-incorrect').html(response.incorrect);
-            })
-            .catch(error => console.log(error));
-
-        });
+        // });
 
         this.socket.on("SERVER_CHAT", (data) => {
             $("#content").append("<div style='color:#ff0'>"+ data[1] + ": <span style='color:white'>"+ data[0] +"</span></div>");
@@ -56,6 +59,7 @@ export default class Dashboard extends React.Component {
     }
 
     startGame() {
+        this.setState({ program_id: 1 });
         fetch('http://bonddemo.tk/v1/user/start-game', {
             method: 'GET',
             headers: {
@@ -71,7 +75,8 @@ export default class Dashboard extends React.Component {
 
 
     getQuestionMC() {
-        fetch('http://bonddemo.tk/v1/question/render-question?difficulty=3', {
+        console.log(this.state.program_id);
+        fetch('http://bonddemo.tk/v1/question/render-question-program?sttQuestion='+this.state.program_id, {
             method: 'GET',
             headers: {
                 'Authorization': 'Bearer lyWyy7-2EqXt6JOjKXnQV90Ghv94ie_5vO20rHFP',
@@ -80,7 +85,9 @@ export default class Dashboard extends React.Component {
         })
         .then(res => res.json())
         .then(response => {
-            this.setState({id: response.id});
+            this.setState({
+                id: response.id,
+            });
             response.body = JSON.parse(response.body);
             
             console.log(response);
@@ -88,7 +95,6 @@ export default class Dashboard extends React.Component {
             $('#answer-A-area').html("A. " + response.body.A );
             $('#answer-B-area').html("B. " + response.body.B );
             $('#answer-C-area').html("C. " + response.body.C );
-            // $('#correct-answer-area').html("Correct: " + response.answer);
 
             $('#summary-correct').html("");
             $('#summary-incorrect').html("");
@@ -99,8 +105,10 @@ export default class Dashboard extends React.Component {
 
 
     getQuestionClient() {
-        //emit question to server node
-        this.socket.emit('GO_TO_GET_QUESTION');
+        this.socket.emit('GO_TO_GET_QUESTION', this.state.program_id);
+        this.setState({
+            program_id: this.state.program_id + 1
+        });
     }
 
 
