@@ -47,6 +47,14 @@ export default class Dashboard extends React.Component {
             $("#content").append("<div style='color:#ff0'>"+ data[1] + ": <span style='color:white'>"+ data[0] +"</span></div>");
             $('#content').append("<style>#content:before{content:'' !important}</style>");
           });
+
+
+        this.socket.on("MC_STATISTIC", (statistic) => {
+            console.log(statistic);
+            console.log("Right: " + statistic[0]);
+            console.log("Wrong: " + statistic[1]);
+
+        });  
     }
 
     handleChange(event) {
@@ -106,14 +114,14 @@ export default class Dashboard extends React.Component {
 
     getQuestionClient() {
         this.socket.emit('GO_TO_GET_QUESTION', this.state.program_id);
-        this.setState({
-            program_id: this.state.program_id + 1
-        });
     }
 
 
     responseAnsewer() {
-        this.socket.emit('RESPONSE_ANSWER_TO_NODE');
+        this.socket.emit('RESPONSE_ANSWER_TO_NODE', this.state.program_id);
+        this.setState({
+            program_id: this.state.program_id + 1
+        });
     }
 
 
