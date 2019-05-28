@@ -10,14 +10,10 @@ export default class Dashboard extends React.Component {
         // this.socket = io("localhost:1235");
         this.socket = io("103.89.85.105:1235");
         this.state = {
-            value: '',
             id: '',
             program_id: 1,
             isDisabled: true
         };
-
-        this.handleChange = this.handleChange.bind(this);
-        this.handleSubmit = this.handleSubmit.bind(this);
     }
 
     componentDidMount() {
@@ -33,9 +29,6 @@ export default class Dashboard extends React.Component {
 
 
         this.socket.on("MC_STATISTIC", (statistic) => {
-            console.log(statistic);
-            console.log("Right: " + statistic[0]);
-            console.log("Wrong: " + statistic[1]);
             $('#summary-correct').html(statistic[0]);
             $('#summary-incorrect').html(statistic[1]);
         });
@@ -46,14 +39,6 @@ export default class Dashboard extends React.Component {
         });
     }
 
-    handleChange(event) {
-        this.setState({ value: event.target.value });
-    }
-
-    handleSubmit(event) {
-        alert('A name was submitted: ' + this.state.value);
-        event.preventDefault();
-    }
 
     startGame() {
         this.setState({ program_id: 1 });
@@ -95,7 +80,7 @@ export default class Dashboard extends React.Component {
 
             $('#summary-correct').html("");
             $('#summary-incorrect').html("");
-
+            $('#correct-answer').html("");
         })
         .catch(error => console.log(error));
     }
