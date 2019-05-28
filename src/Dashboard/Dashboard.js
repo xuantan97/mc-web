@@ -38,7 +38,11 @@ export default class Dashboard extends React.Component {
             console.log("Wrong: " + statistic[1]);
             $('#summary-correct').html(statistic[0]);
             $('#summary-incorrect').html(statistic[1]);
+        });
 
+
+        this.socket.on("RESPONSE_ANSWER_TO_CLIENT", (response) => {
+            $('#correct-answer').html(response.answer);
         });
     }
 
@@ -154,6 +158,10 @@ export default class Dashboard extends React.Component {
                         <div>
                             <label>Total incorrect: &emsp;</label>
                             <span id="summary-incorrect" style={{ float: 'right' }}></span>
+                        </div>
+                        <div>
+                            <label>Correct answer: &emsp;</label>
+                            <span id="correct-answer" style={{ float: 'right' }}></span>
                         </div>
                     </div>
                 </div>
