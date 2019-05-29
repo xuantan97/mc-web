@@ -198,20 +198,18 @@ button {
   font-weight: 700;
 }
 
-.chat-title {
+/* .chat-title {
   background: #eee;
   font-size: 25px;
   text-align: center;
   color: #008afc;
   padding: 0.6rem;
-  /* height: 20%; */
   height: calc((100vh - 50px - 180px)*0.13);
   user-select: none;
   font-weight: 650;
-  /* width: 25%; */
-}
+} */
 
-.summary-title {
+.summary-title, .chat-title {
   background: #eee;
   font-size: 25px;
   text-align: center;
