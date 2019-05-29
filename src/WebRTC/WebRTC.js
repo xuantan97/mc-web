@@ -34,7 +34,7 @@ class WebRTCVideo extends React.Component {
 
         peer.on('open', function () {
             console.log(peer.id);
-            $('#my-id').text(peer.id);
+            // $('#my-id').text(peer.id);
             socket.emit('broadcastID', peer.id);
         });
         peer.on('connection', function (dataCon) {
@@ -64,7 +64,8 @@ class WebRTCVideo extends React.Component {
         return (<section>
             <video id={this.props.id}
                 ref={this.videoTag}
-                width={this.props.width}
+                // width={this.props.width}
+                width="100%"
                 height={this.props.height}
                 autoPlay
                 title={this.props.title}></video>

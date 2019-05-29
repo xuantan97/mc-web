@@ -12,7 +12,8 @@ const history = createBrowserHistory();
 class App extends Component {
   render() {
     return (
-      <div className="col-sm-12">
+      // <div className="col-sm-12">
+      <div>
         <Router history={history}>
           <div>
             {/* <ul>
@@ -22,7 +23,8 @@ class App extends Component {
               </div>
               <li style={{ float: 'right' }}><Link to="/login">Đăng xuất</Link></li>
             </ul> */}
-            <div className="col-sm-8 col-sm-offset-2">
+            {/* <div className="col-sm-8 col-sm-offset-2"> */}
+            <div>
               <Switch>
                 {/* <PrivateRoute exact path="/" component={Dashboard} /> */}
                 <Route path="/" component={Dashboard} />
