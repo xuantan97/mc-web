@@ -122,11 +122,12 @@ export default class Dashboard extends React.Component {
                 $(".right-1").addClass("fix-box");
                 $(".chat-summary").addClass("fix-box");
                 $(".right-1").addClass("start");
+                $('.right-1').removeClass('end');
                 if (top > scroll_y) {
                     $(".right-1").removeClass("fix-box");
                     $(".chat-summary").removeClass("fix-box");
                     $(".right-1").addClass("end");
-                }                
+                }              
             });
         });
         return (
