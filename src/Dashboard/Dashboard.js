@@ -20,7 +20,6 @@ export default class Dashboard extends React.Component {
     }
 
     componentDidMount() {
-        // $('.question').hide();
         this.socket.on('CLOSE_QUESTION', () => {
             this.setState({ isDisabled: false });
         });
@@ -109,8 +108,6 @@ export default class Dashboard extends React.Component {
 
     endGame() {
         this.socket.emit('END_GAME');
-        // $('.act').removeClass('act-not-full');    
-        // $('.question').hide();
     }
 
 
@@ -145,7 +142,7 @@ export default class Dashboard extends React.Component {
                 <div className="main-container">
                     <div className="left">
                         <div className="main">
-                            <img src="/bg2.jpg" style={{width: '100%'}}/>
+                            <img src="/bg2.jpg" style={{width: '100%'}} alt=""/>
                             <div className="main-content">
                                 <div className="head-title">LIVE STREAM TRIVIA GAME</div>
                                 <div className="video">
@@ -153,15 +150,12 @@ export default class Dashboard extends React.Component {
                                 </div>
                             </div>
                         </div>
-                        {/* <div style={{width: '100%', height: '50px', marginTop: '10px', textAlign: 'center'}}>
-                            <img src="/line.png" alt="" className="line" style={{height: '50px'}}/>
-                        </div> */}
                         <div className="act-question">
                             <div className="act act-not-full">
                                 <Button onClick={() => this.startGame()}>Start Game</Button>
                                 <Button onClick={() => this.getQuestionMC()}>Get Question MC</Button>
                                 <Button onClick={() => this.getQuestionClient()}>Get Question Client</Button>
-                                <Button onClick={() => this.responseAnsewer()}>Response answer</Button>
+                                <Button onClick={() => this.responseAnsewer()} disabled={this.state.isDisabled}>Response answer</Button>
                                 <Button onClick={() => this.endGame()}>End Game</Button>
                             </div>
                             <div className="question">
@@ -170,7 +164,6 @@ export default class Dashboard extends React.Component {
                                         <div className="answer" id="answer-A-area">A. </div>
                                         <div className="answer" id="answer-B-area">B. </div>
                                         <div className="answer" id="answer-C-area">C. </div>
-                                        {/* <div id="correct-answer-area"></div> */}
                                 </div>
                             </div>
                         </div>
@@ -195,7 +188,6 @@ export default class Dashboard extends React.Component {
                                     </div>
                                 </div>
                                 <div className="chat-content" style={{width: '100%'}}>
-                                {/* <div style={{ border: 'none', borderBottom: '1px solid #333', marginBottom: '15px' }}></div> */}
                                     <div>
                                         <div className="chat-title">COMMENT</div>
                                         <div className="chat-main">
