@@ -20,7 +20,7 @@ export default class Dashboard extends React.Component {
     }
 
     componentDidMount() {
-        $('.question').hide();
+        // $('.question').hide();
         this.socket.on('CLOSE_QUESTION', () => {
             this.setState({ isDisabled: false });
         });
@@ -86,8 +86,8 @@ export default class Dashboard extends React.Component {
             $('#summary-incorrect').html("");
             $('#correct-answer').html("");
 
-            $('.act').addClass('act-not-full');    
-            $('.question').show();
+            // $('.act').addClass('act-not-full');    
+            // $('.question').show();
         })
         .catch(error => console.log(error));
     }
@@ -109,8 +109,8 @@ export default class Dashboard extends React.Component {
 
     endGame() {
         this.socket.emit('END_GAME');
-        $('.act').removeClass('act-not-full');    
-        $('.question').hide();
+        // $('.act').removeClass('act-not-full');    
+        // $('.question').hide();
     }
 
 
@@ -157,7 +157,7 @@ export default class Dashboard extends React.Component {
                             <img src="/line.png" alt="" className="line" style={{height: '50px'}}/>
                         </div> */}
                         <div className="act-question">
-                            <div className="act">
+                            <div className="act act-not-full">
                                 <Button onClick={() => this.startGame()}>Start Game</Button>
                                 <Button onClick={() => this.getQuestionMC()}>Get Question MC</Button>
                                 <Button onClick={() => this.getQuestionClient()}>Get Question Client</Button>
