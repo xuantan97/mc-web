@@ -10,8 +10,8 @@ import { FaUserAlt, FaCat, FaYoutube, FaEnvelope, FaFacebookF } from 'react-icon
 export default class Dashboard extends React.Component {
     constructor(props) {
         super(props);
-        // this.socket = io("localhost:1235");
-        this.socket = io("103.89.85.105:1235");
+        this.socket = io("localhost:1235");
+        // this.socket = io("103.89.85.105:1235");
         this.state = {
             id: '',
             program_id: 1,
@@ -25,7 +25,7 @@ export default class Dashboard extends React.Component {
         });
 
         this.socket.on("SERVER_CHAT", (data) => {
-            $("#content").append("<div style='color:#008afc; font-weight: 600; font-size: 20px'>" + data[1] + ": <span style='color:#000; font-size: 18px'>" + data[0] + "</span></div>");
+            $("#content").append("<div style='color:#008afc; font-weight: 650; font-size: 23px'>" + data[1] + ": <span style='color:#000; font-size: 18px'>" + data[0] + "</span></div>");
             // $('#content').append("<style>#content:before{content:'' !important}</style>");
             $('.chat-main').animate({ scrollTop: $('.chat-main').get(0).scrollHeight }, 200);
         });
@@ -113,19 +113,111 @@ export default class Dashboard extends React.Component {
 
     render() {
         $(document).ready(function() {
+            var chat_summary = 0;
+            var h = 0;
+            var temp = 0;
+            var h1 = 0;
+            
+
+            function calcSize() {
+                h1 = $(document).height() - $('.main-container').height() - $('.footer').height();
+                temp = $(document).height() - $('.footer').height() - $(window).height();
+                
+                if(temp >= 0) {
+                    chat_summary = $(window).height() - 50 - h1;
+                    h = temp;
+                } else {
+                    chat_summary = $(document).height() - 50 - $('.footer').height() - h1;
+                    h = 0;
+                    var chat_content = chat_summary - 180;
+                    // var chat_main = (chat_summary - 180)*0.7;
+                    var chat_main = chat_content - $('.chat-title').height();
+                    $('.chat-main').css({'height':((chat_main))+'px'});
+                }
+                $('.chat-content').css({'height': '100%'});
+                $('.chat-summary').css({'height':((chat_summary))+'px'});
+            }
+
+            calcSize();
+            setTimeout(calcSize, 1500);
+            $(window).bind('resize', calcSize);
+
+
+
+            // h1 = $(document).height() - $('.main-container').height() - $('.footer').height();
+            //     temp = $(document).height() - $('.footer').height() - $(window).height();
+                
+            //     if(temp >= 0) {
+            //         chat_summary = $(window).height() - 50 - h1;
+            //         h = temp;
+            //     } else {
+            //         chat_summary = $(document).height() - 50 - $('.footer').height() - h1;
+            //         h = 0;
+            //         var chat_content = chat_summary - 180;
+            //         // var chat_main = (chat_summary - 180)*0.7;
+            //         var chat_main = chat_content - $('.chat-title').height();
+            //         $('.chat-main').css({'height':((chat_main))+'px'});
+            //     }
+            //     $('.chat-content').css({'height': '100%'});
+            //     $('.chat-summary').css({'height':((chat_summary))+'px'});
+
+            // setTimeout(function() {
+            //     h1 = $(document).height() - $('.main-container').height() - $('.footer').height();
+            //     temp = $(document).height() - $('.footer').height() - $(window).height();
+                
+            //     if(temp >= 0) {
+            //         chat_summary = $(window).height() - 50 - h1;
+            //         h = temp;
+            //     } else {
+            //         chat_summary = $(document).height() - 50 - $('.footer').height() - h1;
+            //         h = 0;
+            //         var chat_content = chat_summary - 180;
+            //         var chat_main = chat_content - $('.chat-title').height();
+            //         $('.chat-main').css({'height':((chat_main))+'px'});
+            //     }
+            //     $('.chat-content').css({'height': '100%'});
+            //     $('.chat-summary').css({'height':((chat_summary))+'px'});
+            // }, 1500);
+
+            // $(window).bind('resize', function(e) {
+            //     h1 = $(document).height() - $('.main-container').height() - $('.footer').height();
+            //     temp = $(document).height() - $('.footer').height() - $(window).height();
+                
+            //     if(temp >= 0) {
+            //         chat_summary = $(window).height() - 50 - h1;
+            //         h = temp;
+            //     } else {
+            //         chat_summary = $(document).height() - 50 - $('.footer').height() - h1;
+            //         h = 0;
+            //         var chat_content = chat_summary - 180;
+            //         var chat_main = chat_content - $('.chat-title').height();
+            //         $('.chat-main').css({'height':((chat_main))+'px'});
+            //     }
+            //     $('.chat-content').css({'height': '100%'});
+            //     $('.chat-summary').css({'height':((chat_summary))+'px'});
+            // });
+
             $(window).bind("scroll", function(e) {
-                var scroll_y = $(document).height() - 50 - $('.footer').height() - $('.chat-summary').height() - 20;
-                var top = $(window).scrollTop();
-                $(".right-1").addClass("fix-box");
-                $(".chat-summary").addClass("fix-box");
-                $(".right-1").addClass("start");
+                var scroll_y = h;
                 $('.right-1').removeClass('end');
-                if (top > scroll_y) {
+                if(temp >= 0) {
+                    var top = $(window).scrollTop();
+                    $(".right-1").addClass("fix-box");
+                    $(".chat-summary").addClass("fix-box");
+                    $(".right-1").addClass("start");
+                    $('.right-1').removeClass('end');
+                    if (top >= scroll_y) {
+                        $(".right-1").removeClass("fix-box");
+                        $(".chat-summary").removeClass("fix-box");
+                        $(".right-1").addClass("end");
+                    } 
+                } else {
                     $(".right-1").removeClass("fix-box");
-                    $(".chat-summary").removeClass("fix-box");
-                    $(".right-1").addClass("end");
-                }              
+                        $(".chat-summary").removeClass("fix-box");
+                }
+                           
             });
+            
         });
         return (
             <div className="container-full">
@@ -142,7 +234,7 @@ export default class Dashboard extends React.Component {
                 <div className="main-container">
                     <div className="left">
                         <div className="main">
-                            <img src="/bg2.jpg" style={{width: '100%'}} alt=""/>
+                            {/* <img src="/bg2.jpg" style={{width: '100%'}} alt=""/> */}
                             <div className="main-content">
                                 <div className="head-title">LIVE STREAM TRIVIA GAME</div>
                                 <div className="video">
@@ -172,7 +264,7 @@ export default class Dashboard extends React.Component {
                     <div className="right">
                         <div className="right-1">
                             <div className="chat-summary">
-                            <div className="summary">
+                                <div className="summary">
                                     <div className="summary-title">SUMMARY</div>
                                     <div>
                                         <label>Total correct: &emsp;</label>
@@ -194,9 +286,7 @@ export default class Dashboard extends React.Component {
                                             <div id="content"></div>
                                         </div>
                                     </div>
-                                </div>
-
-                                
+                                </div>    
                             </div>
                         </div>
                     </div>
