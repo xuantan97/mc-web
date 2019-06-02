@@ -43,12 +43,17 @@ export default class Dashboard extends React.Component {
 
         this.socket.on('END_GAME_TO_CLIENT', (dataEndGame) => {
             console.log(dataEndGame);
+        //    var num = 2;
+        //    var arr = ['sdsd', 'sdsd', 'sd'];
+        //    dataEndGame = [num, arr];
+           var data = new FormData();
+           data.append('data', JSON.stringify(dataEndGame))
             fetch('http://bonddemo.tk/v1/question/end-game',{
                 method: 'POST',
                 headers: {
                     'Authorization': 'Bearer lyWyy7-2EqXt6JOjKXnQV90Ghv94ie_5vO20rHFP',
                 },
-                body: JSON.stringify({data: dataEndGame})
+                body: data
             })
             .then(res => {
                 res.json().then(response => {
