@@ -10,8 +10,8 @@ import { FaUserAlt, FaCat, FaYoutube, FaEnvelope, FaFacebookF } from 'react-icon
 export default class Dashboard extends React.Component {
     constructor(props) {
         super(props);
-        this.socket = io("localhost:1235");
-        // this.socket = io("103.89.85.105:1235");
+        // this.socket = io("localhost:1235");
+        this.socket = io("103.89.85.105:1235");
         this.state = {
             id: '',
             program_id: 1,
@@ -38,12 +38,18 @@ export default class Dashboard extends React.Component {
 
 
         this.socket.on("RESPONSE_ANSWER_TO_CLIENT", (response) => {
-            $('#correct-answer').html(response.answer);
+            $('#correct-answer').html(response[0].answer);
+        });
+
+        this.socket.on('END_GAME_TO_CLIENT', (dataEndGame) => {
+            console.log(dataEndGame);
         });
     }
 
 
     startGame() {
+        this.socket.emit('START_GAME');
+
         this.setState({ program_id: 1 });
         fetch('http://bonddemo.tk/v1/user/start-game', {
             method: 'GET',
