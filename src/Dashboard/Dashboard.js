@@ -10,8 +10,8 @@ import { FaUserAlt, FaCat, FaYoutube, FaEnvelope, FaFacebookF } from 'react-icon
 export default class Dashboard extends React.Component {
     constructor(props) {
         super(props);
-        // this.socket = io("localhost:1235");
-        this.socket = io("103.89.85.105:1235");
+        this.socket = io("localhost:1235");
+        // this.socket = io("103.89.85.105:1235");
         this.state = {
             id: '',
             program_id: 1,
@@ -26,26 +26,22 @@ export default class Dashboard extends React.Component {
 
         this.socket.on("SERVER_CHAT", (data) => {
             $("#content").append("<div style='color:#008afc; font-weight: 650; font-size: 23px'>" + data[1] + ": <span style='color:#000; font-size: 18px'>" + data[0] + "</span></div>");
-            // $('#content').append("<style>#content:before{content:'' !important}</style>");
             $('.chat-main').animate({ scrollTop: $('.chat-main').get(0).scrollHeight }, 200);
         });
 
 
-        this.socket.on("MC_STATISTIC", (statistic) => {
-            $('#summary-correct').html(statistic[0]);
-            $('#summary-incorrect').html(statistic[1]);
+        this.socket.on("STATISTIC", (statistic) => {
+            $('#summary-correct').html(statistic.right);
+            $('#summary-incorrect').html(statistic.wrong);
         });
 
 
-        this.socket.on("RESPONSE_ANSWER_TO_CLIENT", (response) => {
-            $('#correct-answer').html(response[0].answer);
+        this.socket.on("RESPONSE_ANSWER_TO_CLIENT", (data) => {
+            $('#correct-answer').html(data.response.answer);
         });
 
         this.socket.on('END_GAME_TO_CLIENT', (dataEndGame) => {
             console.log(dataEndGame);
-        //    var num = 2;
-        //    var arr = ['sdsd', 'sdsd', 'sd'];
-        //    dataEndGame = [num, arr];
            var data = new FormData();
            data.append('data', JSON.stringify(dataEndGame))
             fetch('http://bonddemo.tk/v1/question/end-game',{
@@ -166,61 +162,6 @@ export default class Dashboard extends React.Component {
             setTimeout(calcSize, 1500);
             $(window).bind('resize', calcSize);
 
-
-
-            // h1 = $(document).height() - $('.main-container').height() - $('.footer').height();
-            //     temp = $(document).height() - $('.footer').height() - $(window).height();
-                
-            //     if(temp >= 0) {
-            //         chat_summary = $(window).height() - 50 - h1;
-            //         h = temp;
-            //     } else {
-            //         chat_summary = $(document).height() - 50 - $('.footer').height() - h1;
-            //         h = 0;
-            //         var chat_content = chat_summary - 180;
-            //         // var chat_main = (chat_summary - 180)*0.7;
-            //         var chat_main = chat_content - $('.chat-title').height();
-            //         $('.chat-main').css({'height':((chat_main))+'px'});
-            //     }
-            //     $('.chat-content').css({'height': '100%'});
-            //     $('.chat-summary').css({'height':((chat_summary))+'px'});
-
-            // setTimeout(function() {
-            //     h1 = $(document).height() - $('.main-container').height() - $('.footer').height();
-            //     temp = $(document).height() - $('.footer').height() - $(window).height();
-                
-            //     if(temp >= 0) {
-            //         chat_summary = $(window).height() - 50 - h1;
-            //         h = temp;
-            //     } else {
-            //         chat_summary = $(document).height() - 50 - $('.footer').height() - h1;
-            //         h = 0;
-            //         var chat_content = chat_summary - 180;
-            //         var chat_main = chat_content - $('.chat-title').height();
-            //         $('.chat-main').css({'height':((chat_main))+'px'});
-            //     }
-            //     $('.chat-content').css({'height': '100%'});
-            //     $('.chat-summary').css({'height':((chat_summary))+'px'});
-            // }, 1500);
-
-            // $(window).bind('resize', function(e) {
-            //     h1 = $(document).height() - $('.main-container').height() - $('.footer').height();
-            //     temp = $(document).height() - $('.footer').height() - $(window).height();
-                
-            //     if(temp >= 0) {
-            //         chat_summary = $(window).height() - 50 - h1;
-            //         h = temp;
-            //     } else {
-            //         chat_summary = $(document).height() - 50 - $('.footer').height() - h1;
-            //         h = 0;
-            //         var chat_content = chat_summary - 180;
-            //         var chat_main = chat_content - $('.chat-title').height();
-            //         $('.chat-main').css({'height':((chat_main))+'px'});
-            //     }
-            //     $('.chat-content').css({'height': '100%'});
-            //     $('.chat-summary').css({'height':((chat_summary))+'px'});
-            // });
-
             $(window).bind("scroll", function(e) {
                 var scroll_y = h;
                 $('.right-1').removeClass('end');
@@ -258,7 +199,6 @@ export default class Dashboard extends React.Component {
                 <div className="main-container">
                     <div className="left">
                         <div className="main">
-                            {/* <img src="/bg2.jpg" style={{width: '100%'}} alt=""/> */}
                             <div className="main-content">
                                 <div className="head-title">LIVE STREAM TRIVIA GAME</div>
                                 <div className="video">
