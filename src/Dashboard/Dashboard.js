@@ -100,6 +100,7 @@ export default class Dashboard extends React.Component {
             $('#answer-A-area').html("A. " + response.body.A);
             $('#answer-B-area').html("B. " + response.body.B);
             $('#answer-C-area').html("C. " + response.body.C);
+            $('#answer-D-area').html("D. " + response.body.D);
 
             $('#summary-correct').html("");
             $('#summary-incorrect').html("");
@@ -220,6 +221,7 @@ export default class Dashboard extends React.Component {
                                         <div className="answer" id="answer-A-area">A. </div>
                                         <div className="answer" id="answer-B-area">B. </div>
                                         <div className="answer" id="answer-C-area">C. </div>
+                                        <div className="answer" id="answer-D-area">D. </div>
                                 </div>
                             </div>
                         </div>
