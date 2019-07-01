@@ -17,7 +17,11 @@ export default class Dashboard extends React.Component {
         this.state = {
             id: '',
             program_id: 1,
-            isDisabled: true,
+            isDisStartGame: false,
+            isDisGetQ: true,
+            isDisGetQToClient: true,
+            isDisResponse: true,
+            isDisEndGame: true,
             winner_result: []
         };
     }
@@ -41,7 +45,7 @@ export default class Dashboard extends React.Component {
 
     componentDidMount() {
         this.socket.on('CLOSE_QUESTION', () => {
-            this.setState({ isDisabled: false });
+            this.setState({ isDisResponse: false });
         });
 
         this.socket.on("SERVER_CHAT", (data) => {
@@ -100,7 +104,11 @@ export default class Dashboard extends React.Component {
     startGame() {
         this.socket.emit('START_GAME');
 
-        this.setState({ program_id: 1 });
+        this.setState({ 
+            program_id: 1 ,
+            isDisStartGame: true,
+            isDisGetQ: false
+        });
         fetch('http://bonddemo.tk/v1/user/start-game', {
             method: 'GET',
             headers: {
@@ -116,7 +124,6 @@ export default class Dashboard extends React.Component {
 
 
     getQuestionMC() {
-        console.log(this.state.program_id);
         fetch('http://bonddemo.tk/v1/question/render-question-program?sttQuestion=' + this.state.program_id, {
             method: 'GET',
             headers: {
@@ -128,10 +135,11 @@ export default class Dashboard extends React.Component {
         .then(response => {
             this.setState({
                 id: response.id,
+                isDisGetQ: true,
+                isDisGetQToClient: false
             });
             response.body = JSON.parse(response.body);
 
-            console.log(response);
             $('#question-area').html(response.title);
             $('#answer-A-area').html("A. " + response.body.A);
             $('#answer-B-area').html("B. " + response.body.B);
@@ -142,8 +150,6 @@ export default class Dashboard extends React.Component {
             $('#summary-incorrect').html("");
             $('#correct-answer').html("");
 
-            // $('.act').addClass('act-not-full');    
-            // $('.question').show();
         })
         .catch(error => console.log(error));
     }
@@ -151,15 +157,28 @@ export default class Dashboard extends React.Component {
 
     getQuestionClient() {
         this.socket.emit('GO_TO_GET_QUESTION', this.state.program_id);
+        this.setState({
+            isDisGetQToClient: true,
+        });
     }
 
 
     responseAnsewer() {
         this.socket.emit('RESPONSE_ANSWER_TO_NODE', this.state.program_id);
-        this.setState({
-            program_id: this.state.program_id + 1,
-            isDisabled: true
-        });
+        if(this.state.program_id === 10) {
+            this.setState({
+                isDisResponse: true,
+                isDisEndGame: false
+            });
+        }
+        else {
+            this.setState({
+                program_id: this.state.program_id + 1,
+                isDisResponse: true,
+                isDisGetQ: false
+            });
+        }
+        
     }
 
 
@@ -259,11 +278,11 @@ export default class Dashboard extends React.Component {
                         </div>
                         <div className="act-question">
                             <div className="act act-not-full">
-                                <Button onClick={() => this.startGame()}>Start Game</Button>
-                                <Button onClick={() => this.getQuestionMC()}>Get Question MC</Button>
-                                <Button onClick={() => this.getQuestionClient()}>Get Question Client</Button>
-                                <Button onClick={() => this.responseAnsewer()} disabled={this.state.isDisabled}>Response answer</Button>
-                                <Button onClick={() => this.endGame()}>End Game</Button>
+                                <Button onClick={() => this.startGame()} disabled={this.state.isDisStartGame}>Start Game</Button>
+                                <Button onClick={() => this.getQuestionMC()} disabled={this.state.isDisGetQ}>Get Question MC</Button>
+                                <Button onClick={() => this.getQuestionClient()} disabled={this.state.isDisGetQToClient}>Get Question Client</Button>
+                                <Button onClick={() => this.responseAnsewer()} disabled={this.state.isDisResponse}>Response answer</Button>
+                                <Button onClick={() => this.endGame()} disabled={this.state.isDisEndGame}>End Game</Button>
                             </div>
                             <div className="question">
                                 <div className="question-1">
