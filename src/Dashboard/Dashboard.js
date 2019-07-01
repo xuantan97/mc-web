@@ -184,6 +184,10 @@ export default class Dashboard extends React.Component {
 
     endGame() {
         this.socket.emit('END_GAME');
+        this.setState({
+            isDisEndGame: true,
+            isDisStartGame: false
+        });
     }
 
 
