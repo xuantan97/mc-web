@@ -6,18 +6,38 @@ import io from 'socket.io-client';
 import { Navbar, NavDropdown } from 'react-bootstrap';
 import { MDBCol, MDBContainer, MDBRow, MDBFooter } from "mdbreact";
 import { FaUserAlt, FaCat, FaYoutube, FaEnvelope, FaFacebookF } from 'react-icons/fa';
+import Modal from 'react-awesome-modal';
+import BootstrapTable from 'react-bootstrap-table-next';
 
 export default class Dashboard extends React.Component {
     constructor(props) {
         super(props);
-        this.socket = io("localhost:1235");
-        // this.socket = io("103.89.85.105:1235");
+        // this.socket = io("localhost:1235");
+        this.socket = io("103.89.85.105:1235");
         this.state = {
             id: '',
             program_id: 1,
-            isDisabled: true
+            isDisabled: true,
+            winner_result: []
         };
     }
+
+    openModal() {
+        this.setState({
+            visible : true
+        });
+      }
+
+      closeModal() {
+        this.setState({
+            visible : false
+        });
+      }
+      handleClose() {
+        this.setState({
+          visible : this.state.checkStatus
+        });
+      }
 
     componentDidMount() {
         this.socket.on('CLOSE_QUESTION', () => {
@@ -42,6 +62,22 @@ export default class Dashboard extends React.Component {
 
         this.socket.on('END_GAME_TO_CLIENT', (dataEndGame) => {
             console.log(dataEndGame);
+            
+            var temp = [];
+            dataEndGame[1].map((obj)=>{
+                var winner = {
+                    stt: temp.length + 1,
+                    username: obj[1],
+                    money: dataEndGame[2]
+                };
+                temp.push(winner);
+            });
+
+            this.setState({
+                winner_result: temp
+            });
+            this.openModal();
+
            var data = new FormData();
            data.append('data', JSON.stringify(dataEndGame))
             fetch('http://bonddemo.tk/v1/question/end-game',{
@@ -185,11 +221,25 @@ export default class Dashboard extends React.Component {
             });
             
         });
+        const columns = [
+            {
+              dataField: 'stt',
+              text: 'STT'
+            },
+            {
+              dataField: 'username',
+              text: 'Họ tên'
+            }, 
+            {
+              dataField: 'money',
+              text: 'Số tiền nhận được ($)'
+            }
+        ];
         return (
             <div className="container-full">
                 <div className="header" style={{ width: '100%' }}>
                     <Navbar bg="dark" expand="lg">
-                        <Navbar.Brand href="#home" style={{ color: '#008afc', marginTop: '-5px', position: 'absolute', left: '0'}}><FaCat style={{ fontSize: '22px'}} /> &nbsp;Trivia Game</Navbar.Brand>
+                        <Navbar.Brand href="#home" style={{ color: '#008afc', marginTop: '-5px', position: 'absolute', left: '0'}}><FaCat style={{ fontSize: '22px'}} /> &nbsp;ST Game</Navbar.Brand>
                         <NavDropdown title={<FaUserAlt style={{ fontSize: '20px'}} />} id="basic-nav-dropdown" style={{position: 'absolute', right: '20px'}}>
                             <NavDropdown.Item href="#action/3.1">Profile</NavDropdown.Item>
                             <NavDropdown.Divider />
@@ -257,6 +307,14 @@ export default class Dashboard extends React.Component {
                         </div>
                     </div>
                 </div>
+                <Modal visible={this.state.visible} width="700" height="400" effect="fadeInUp"  onClickAway={() => this.handleClose()}>
+                    <div className="modal-container">
+                        <h1 className="head-title">DANH SÁCH {this.state.winner_result.length} NGƯỜI CHIẾN THẮNG</h1>
+                        <div className="winner-table">
+                            <BootstrapTable keyField='id' data={ this.state.winner_result } columns={ columns } />
+                        </div>
+                    </div>
+                </Modal>
 
                 <div className="footer">
                     <div style={{margin: '20px 10% 0 10%'}}>
@@ -264,7 +322,7 @@ export default class Dashboard extends React.Component {
                             <MDBContainer fluid className="text-center text-md-left">
                             <MDBRow>
                                 <MDBCol md="4">
-                                    <h5 className="title">TRIVIA GAME</h5>
+                                    <h5 className="title">ST GAME</h5>
                                     <ul className="w3_footer_grid_list" style={{padding: '0', background: 'transparent'}}>
                                         <li className="list-unstyled">
                                             <a href="#!">Home</a>
@@ -281,13 +339,13 @@ export default class Dashboard extends React.Component {
                                     <h5 className="title">CONTACT</h5>
                                     <ul style={{padding: '0', background: 'transparent'}}>
                                         <li className="list-unstyled">
-                                            <a href="#!"><FaYoutube/>&nbsp; Trivia Game</a>
+                                            <a href="#!"><FaYoutube/>&nbsp; ST Game</a>
                                         </li>
                                         <li className="list-unstyled">
                                             <a href="#!"><FaEnvelope/>&nbsp; abc@gmail.com</a>
                                         </li>
                                         <li className="list-unstyled">
-                                            <a href="#!"><FaFacebookF/>&nbsp; Trivia Game</a>
+                                            <a href="#!"><FaFacebookF/>&nbsp; ST Game</a>
                                         </li>
                                     </ul>
                                 </MDBCol>
