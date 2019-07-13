@@ -12,7 +12,6 @@ import BootstrapTable from 'react-bootstrap-table-next';
 export default class Dashboard extends React.Component {
     constructor(props) {
         super(props);
-        // this.socket = io("localhost:1235");
         this.socket = io("103.89.85.105:1235");
         this.state = {
             id: '',
@@ -263,11 +262,6 @@ export default class Dashboard extends React.Component {
                 <div className="header" style={{ width: '100%' }}>
                     <Navbar bg="dark" expand="lg">
                         <Navbar.Brand href="#home" style={{ color: '#008afc', marginTop: '-5px', position: 'absolute', left: '0'}}><FaCat style={{ fontSize: '22px'}} /> &nbsp;ST Game</Navbar.Brand>
-                        <NavDropdown title={<FaUserAlt style={{ fontSize: '20px'}} />} id="basic-nav-dropdown" style={{position: 'absolute', right: '20px'}}>
-                            <NavDropdown.Item href="#action/3.1">Profile</NavDropdown.Item>
-                            <NavDropdown.Divider />
-                            <NavDropdown.Item href="#" onClick={() => this.logout()}>Log out</NavDropdown.Item>
-                        </NavDropdown>
                     </Navbar>
                 </div>
                 <div className="main-container">
@@ -369,26 +363,6 @@ export default class Dashboard extends React.Component {
                                         </li>
                                         <li className="list-unstyled">
                                             <a href="#!"><FaFacebookF/>&nbsp; ST Game</a>
-                                        </li>
-                                    </ul>
-                                </MDBCol>
-
-                                <MDBCol md="4">
-                                    <h5 className="title">MOBILE APPS</h5>
-                                    <ul style={{padding: '0', background: 'transparent'}}>
-                                        <li className="list-unstyled">
-                                            <a href="#!">
-                                                <div>
-                                                    <img src="/Google_Play.svg" className="img-responsive"/>
-                                                </div>
-                                            </a>
-                                        </li>
-                                        <li className="list-unstyled">
-                                            <a href="#!">
-                                                <div>
-                                                    <img src="/app.png" className="img-responsive"/>
-                                                </div>
-                                            </a>
                                         </li>
                                     </ul>
                                 </MDBCol>
