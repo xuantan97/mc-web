@@ -319,9 +319,9 @@ export default class Dashboard extends React.Component {
                                     </div>
                                 </div>
                                 <div className="feeling">
-                                    <Button variant="success" onClick={(event) => this.sendIcon(event)} value="1">Tim</Button>
-                                    <Button variant="success" onClick={(event) => this.sendIcon(event)} value="2">Haha</Button>
-                                    <Button variant="success" onClick={(event) => this.sendIcon(event)} value="3">Sad</Button>
+                                    <Button onClick={(event) => this.sendIcon(event)} value="1" className="heart"></Button>
+                                    <Button onClick={(event) => this.sendIcon(event)} value="2" className="haha"></Button>
+                                    <Button onClick={(event) => this.sendIcon(event)} value="3" className="sad"></Button>
                                 </div>
                                 <div className="chat-content" style={{width: '100%'}}>
                                     <div>

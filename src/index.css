@@ -410,3 +410,83 @@ button {
   border-radius: 8px;
   height: 300px;
 }
+
+.feeling {
+  display: flex;
+  justify-content: center;
+  margin-bottom: 20px;
+}
+
+.heart, .haha, .sad {
+  width: 70px;
+  height: 70px;
+  border-radius: 50%;
+  transition: 0.3s linear ease;
+  outline: none !important;
+  border: none !important;
+  
+}
+
+.heart {
+  /* background: #f00; */
+  background: url('/heart.png') no-repeat scroll 0 0 transparent;
+  background-size: cover;
+  background-position: center;
+}
+
+.haha {
+  /* background: #f90; */
+  background: url('/haha.png') no-repeat scroll 0 0 transparent; 
+  background-size: cover;
+  background-position: center;
+}
+
+.sad {
+  /* background: #0f0; */
+  background: url('/sad.png') no-repeat scroll 0 0 transparent; 
+  background-size: cover;
+  background-position: center;
+}
+
+.heart:hover {
+  background: url('/heart.gif') no-repeat scroll 0 0 transparent !important;
+  background-size: 70px 70px !important;
+  /* box-shadow: 0 0 2px rgba(0, 0, 0, 0.5); */
+  transform: scale(1.1);
+}
+
+.haha:hover {
+  background: url('/haha.gif') no-repeat scroll 0 0 transparent !important;
+  background-size: 70px 70px !important;
+  /* box-shadow: 0 0 2px rgba(0, 0, 0, 0.5); */
+  transform: scale(1.1);
+}
+
+.sad:hover {
+  background: url('/sad.gif') no-repeat scroll 0 0 transparent !important;
+  background-size: 70px 70px !important;
+  /* box-shadow: 0 0 2px rgba(0, 0, 0, 0.5); */
+  transform: scale(1.1);
+}
+
+.heart:focus {
+  background: url('/heart.gif') no-repeat scroll 0 0 transparent !important;
+  background-size: 70px 70px !important;
+  box-shadow: 0 0 2px rgba(0, 0, 0, 0.5) !important;
+}
+
+.haha:focus {
+  background: url('/haha.gif') no-repeat scroll 0 0 transparent !important;
+  background-size: 70px 70px !important;
+  box-shadow: 0 0 2px rgba(0, 0, 0, 0.5) !important;
+}
+
+.sad:focus {
+  background: url('/sad.gif') no-repeat scroll 0 0 transparent !important;
+  background-size: 70px 70px !important;
+  box-shadow: 0 0 2px rgba(0, 0, 0, 0.5) !important;
+}
+
+.heart:active, .haha:active, .sad:active {
+  transform: scale(1);
+}
