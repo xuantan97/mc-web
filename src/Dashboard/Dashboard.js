@@ -12,6 +12,7 @@ import BootstrapTable from 'react-bootstrap-table-next';
 export default class Dashboard extends React.Component {
     constructor(props) {
         super(props);
+        // this.socket = io("localhost:1235");
         this.socket = io("103.89.85.105:1235");
         this.state = {
             id: '',
@@ -190,6 +191,11 @@ export default class Dashboard extends React.Component {
     }
 
 
+    sendIcon(event) {
+        this.socket.emit('SEND_ICON', event.target.value);
+    }
+
+
     render() {
         $(document).ready(function() {
             var chat_summary = 0;
@@ -311,6 +317,11 @@ export default class Dashboard extends React.Component {
                                         <label>Correct answer: &emsp;</label>
                                         <span id="correct-answer" className="float-right"></span>
                                     </div>
+                                </div>
+                                <div className="feeling">
+                                    <Button variant="success" onClick={(event) => this.sendIcon(event)} value="1">Tim</Button>
+                                    <Button variant="success" onClick={(event) => this.sendIcon(event)} value="2">Haha</Button>
+                                    <Button variant="success" onClick={(event) => this.sendIcon(event)} value="3">Sad</Button>
                                 </div>
                                 <div className="chat-content" style={{width: '100%'}}>
                                     <div>
